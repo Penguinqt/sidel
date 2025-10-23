@@ -1,0 +1,125 @@
+/* Root layout */
+.login-root {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #111315;
+  padding: 24px;
+  color: #0b0d0f;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 720px;
+  background: #fff;
+  border-radius: 8px;
+  padding: 48px 56px 56px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  text-align: center;
+}
+
+.login-logo {
+  text-align: left;
+  font-size: 24px;
+  font-weight: 600;
+  color: #192224;
+  margin-bottom: 8px;
+}
+
+.login-title {
+  font-size: 40px;
+  line-height: 1.2;
+  margin: 8px 0 12px;
+  color: #13252a;
+  font-weight: 800;
+}
+
+.login-subtext {
+  font-size: 14px;
+  color: #6d7a7f;
+  margin-bottom: 28px;
+}
+
+.login-subtext a {
+  color: #20b486;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.btn {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 52px;
+  border-radius: 28px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: box-shadow .2s ease, background-color .2s ease, border-color .2s ease;
+}
+
+.social-btn {
+  background: #fff;
+  border-color: #dfe5e7;
+  color: #1f2a2e;
+}
+
+.social-btn:hover {
+  box-shadow: 0 8px 22px rgba(0,0,0,0.08);
+}
+
+.google-icon {
+  display: inline-flex;
+  align-items: center;
+}
+
+.separator {
+  position: relative;
+  margin: 24px 0;
+  color: #8a9aa0;
+}
+
+.separator::before,
+.separator::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 40%;
+  height: 1px;
+  background: #dbe3e6;
+}
+
+.separator::before { left: 0; }
+.separator::after { right: 0; }
+
+.separator span {
+  padding: 0 12px;
+  background: #fff;
+  position: relative;
+  z-index: 1;
+}
+
+.email-btn {
+  background: #eafff7;
+  color: #1a8a6c;
+  border-color: #2bd19f;
+}
+
+.email-btn:hover {
+  background: #d8fff2;
+}
+
+.login-footer {
+  margin-top: 28px;
+  font-size: 14px;
+  color: #8a9aa0;
+}
+
+.login-footer a {
+  color: #1bc28e;
+  text-decoration: none;
+  font-weight: 600;
+}
