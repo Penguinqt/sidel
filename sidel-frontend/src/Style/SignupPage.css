@@ -1,0 +1,124 @@
+/* General Layout */
+.signup-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #ffffff;
+  font-family: 'Poppins', sans-serif;
+  color: #333;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.signup-container.loaded {
+  opacity: 1;
+}
+
+/* Logo */
+.logo {
+  font-size: 35px;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+
+/* Title */
+.signup-title {
+  font-size: 50px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+/* Policy text */
+.policy-text {
+  font-size: 13px;
+  color: #777;
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.policy-link {
+  color: #2ecc71;
+  text-decoration: none;
+}
+
+/* Google Button */
+.google-btn {
+  width: 500px;
+  height: 45px;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  cursor: pointer;
+  margin-bottom: 20px;
+  transition: background 0.2s;
+
+}
+
+.google-btn:hover {
+  background-color: #f5f5f5;
+}
+
+.google-icon {
+  width: 20px;
+  height: 20px;
+
+}
+
+/* Divider */
+.divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 320px;
+  margin-bottom: 20px;
+}
+
+.line {
+  flex: 1;
+  height: 1px;
+  background-color: #ccc;
+}
+
+.or-text {
+  margin: 0 10px;
+  color: #777;
+  font-size: 13px;
+}
+
+/* Email Button */
+.email-btn {
+  width: 500px;
+  height: 45px;
+  background-color: white;
+  border: 1px solid #2ecc71;
+  color: #2ecc71;
+  border-radius: 25px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.email-btn:hover {
+  background-color: #2ecc71;
+  color: white;
+}
+
+/* Footer */
+.footer-text {
+  margin-top: 30px;
+  font-size: 13px;
+  color: #777;
+}
+
+.signup-link {
+  color: #2ecc71;
+  text-decoration: none;
+  font-weight: 500;
+}
