@@ -1,14 +1,12 @@
 import React from 'react';
-import './LoginPage.css';
+import './SignupPage.css';
 
-export default function LoginPage() {
+export default function SignupPage() {
   const handleGoogle = () => {
-    // Placeholder: wire to OAuth later
     alert('Google auth clicked');
   };
 
   const handleEmail = () => {
-    // Placeholder: wire to email sign in later
     alert('Email sign-in clicked');
   };
 
