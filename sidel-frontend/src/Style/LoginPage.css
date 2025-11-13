@@ -82,6 +82,7 @@
   inset: 0;
   border-radius: 20px;
   padding: 2px;
+  /**/
   background: linear-gradient(135deg, #00bcd4, #0f2c3f);
   mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
