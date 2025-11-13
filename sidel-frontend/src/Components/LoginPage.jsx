@@ -56,7 +56,6 @@ const LoginPage = () => {
       </div>
     </div>
   );
-  // asddasdasd
 };
 
 export default LoginPage;
