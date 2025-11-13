@@ -1,7 +1,10 @@
 import React from 'react';
 import "../Style/LandingPage.css"
+import { useNavigate } from 'react-router-dom';
 
 export default function LandingPage() {
+  const navigate = useNavigate();
+
   return (
     <div className="landing-page">
       <header className="header">
@@ -15,8 +18,16 @@ export default function LandingPage() {
             <li><a href="#contact">Contact</a></li>
           </ul>
           <div className="auth-buttons">
-            <button className="btn btn-login">Login</button>
-            <button className="btn btn-signup">Sign up</button>
+            <button
+              className="btn btn-login"
+              onClick={() => navigate("/login")}>
+              Login
+            </button>
+            <button
+              className="btn btn-signup"
+              onClick={() => navigate("/signup")} >
+              Sign up
+            </button>
           </div>
         </nav>
       </header>

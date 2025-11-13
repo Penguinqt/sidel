@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import "../Style/SignupPage.css";
 
 const SignupPage = () => {
@@ -17,9 +18,9 @@ const SignupPage = () => {
 
       <p className="policy-text">
         By continuing to use this app, you agree to our{" "}
-        <a href="#" className="policy-link">
+        <Link to="/privacy-policy" className="policy-link">
           Privacy Policy.
-        </a>
+        </Link>
       </p>
 
       <button className="google-btn">
@@ -38,9 +39,9 @@ const SignupPage = () => {
 
       <p className="footer-text">
         Already have an account?{" "}
-        <a href="#" className="signup-link">
-          Sign up
-        </a>
+        <Link to="/login" className="signup-link">
+          Log in
+        </Link>
       </p>
     </div>
   );
