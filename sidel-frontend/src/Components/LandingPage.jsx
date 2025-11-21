@@ -1,37 +1,14 @@
 import React from 'react';
 import "../Style/LandingPage.css"
-import { useNavigate } from 'react-router-dom';
+import Header from './Header';
 
 export default function LandingPage() {
-  const navigate = useNavigate();
+ 
 
   return (
+   
     <div className="landing-page">
-      <header className="header">
-        <div className="logo">logo</div>
-        <nav className="nav">
-          <ul className="nav-links">
-            <li><a href="#home">Home</a></li>
-            <li><a href="#services">Services</a></li>
-            <li><a href="#about">About us</a></li>
-            <li><a href="#reviews">Reviews</a></li>
-            <li><a href="#contact">Contact</a></li>
-          </ul>
-          <div className="auth-buttons">
-            <button
-              className="btn btn-login"
-              onClick={() => navigate("/login")}>
-              Login
-            </button>
-            <button
-              className="btn btn-signup"
-              onClick={() => navigate("/signup")} >
-              Sign up
-            </button>
-          </div>
-        </nav>
-      </header>
-
+      <Header />
       <main className="hero">
         <div className="floating-images">
           <div className="floating-item laptop"></div>

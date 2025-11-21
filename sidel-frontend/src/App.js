@@ -3,6 +3,7 @@ import SignupPage from './Components/SignupPage';
 import LandingPage  from './Components/LandingPage';
 import LoginPage from './Components/LoginPage';
 import Dashboard from "./Components/Dashboard";
+import Reviews from "./Components/Reviews";
 
 
 
@@ -14,6 +15,7 @@ function App() {
         <Route path="/signup" element={<SignupPage />}/>
         <Route path="/login" element={<LoginPage />}/> 
         <Route path="/dashboard" element={<Dashboard/>}/>
+        <Route path="/reviews" element={<Reviews/>}/>
       </Routes>
     </Router>
   );
