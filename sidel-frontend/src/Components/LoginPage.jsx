@@ -1,14 +1,30 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState} from "react";
 import "../Style/LoginPage.css";
 import { Link } from "react-router-dom";
+import { useNavigate} from "react-router-dom"
+import googleLogo from "../Assets/google-logo.png"
+import facebookLogo from "../Assets/facebook-logo.png"
 
 const LoginPage = () => {
   const [isLoaded, setIsLoaded] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+
 
   useEffect(() => {
     setIsLoaded(true);
   }, []);
 
+
+  const handleLogin = () => {
+    if(email === "admin@gmail.com" && password === "123456"){
+        navigate("/dashboard");
+    } else{
+       alert("Invalid Credentials");
+    }
+  }
   return (
     <div className={`login-container ${isLoaded ? "loaded" : ""}`}>
       <div className="login-card">
@@ -17,12 +33,12 @@ const LoginPage = () => {
 
         <div className="social-buttons">
           <button className="google-btn">
-            <img src="/google-icon.png" alt="Google" className="icon" />
-            Continue with Google
+            <img src={googleLogo} alt="Google" className="icon" />
+            Continue with <br />Google
           </button>
           <button className="facebook-btn">
-            <img src="/facebook-icon.png" alt="Facebook" className="icon" />
-            Continue with Facebook
+            <img src={facebookLogo} alt="Facebook" className="icon" />
+            Continue with  <br /> Facebook
           </button>
         </div>
 
@@ -33,9 +49,23 @@ const LoginPage = () => {
         </div>
 
         <form className="login-form">
-          <input type="email" placeholder="Email" required />
-          <input type="password" placeholder="Password" required />
-          <button type="submit" className="login-btn">Login</button>
+          <input 
+            type="email" 
+            placeholder="Email" 
+            onChange={(e) => setEmail(e.target.value)} 
+          />
+
+          <input 
+            type="password" 
+            placeholder="Password" 
+            onChange={(e) => setPassword(e.target.value)} 
+          />
+          <button 
+            type="submit" 
+            className="login-btn"
+            onClick={handleLogin}
+            >Login
+            </button>
         </form>
 
         <p className="terms-text">
@@ -48,12 +78,7 @@ const LoginPage = () => {
         </p>
       </div>
 
-      {/* Floating visuals */}
-      <div className="floating-shapes">
-        <div className="shape circle"></div>
-        <div className="shape square"></div>
-        <div className="shape triangle"></div>
-      </div>
+    
     </div>
   );
 };
