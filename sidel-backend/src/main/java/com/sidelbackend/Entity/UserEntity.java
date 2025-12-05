@@ -21,7 +21,7 @@ public class UserEntity {
     private LocalDate dateCreated;
 
     @OneToMany(mappedBy = "user")
-    private List<Booking> bookings;
+    private List<BookingEntity> bookings;
 
     @OneToMany(mappedBy = "user")
     private List<ReviewEntity> reviews;
@@ -87,11 +87,11 @@ public class UserEntity {
         this.dateCreated = dateCreated;
     }
 
-    public List<Booking> getBookings() {
+    public List<BookingEntity> getBookings() {
         return bookings;
     }
 
-    public void setBookings(List<Booking> bookings) {
+    public void setBookings(List<BookingEntity> bookings) {
         this.bookings = bookings;
     }
 
