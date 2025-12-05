@@ -2,7 +2,8 @@ package com.sidelbackend.Entity;
 
 
 import jakarta.persistence.*;
-import org.apache.catalina.User;
+import com.sidelbackend.Entity.UserEntity;
+import com.sidelbackend.Entity.BookingEntity;
 
 import java.time.LocalDate;
 
@@ -16,7 +17,7 @@ public class GadgetEntity {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private UserEntity user;
 
     private String gadgetType;
     private String brand;
@@ -25,7 +26,7 @@ public class GadgetEntity {
     private LocalDate dateReported;
 
     @OneToMany(mappedBy = "gadget")
-    private java.util.List<Booking> bookings;
+    private java.util.List<BookingEntity> bookings;
 
     // GETTERS & SETTERS
     public Long getGadgetId() {
@@ -36,11 +37,11 @@ public class GadgetEntity {
         this.gadgetId = gadgetId;
     }
 
-    public User getUser() {
+    public UserEntity getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserEntity user) {
         this.user = user;
     }
 
@@ -84,11 +85,11 @@ public class GadgetEntity {
         this.dateReported = dateReported;
     }
 
-    public java.util.List<Booking> getBookings() {
+    public java.util.List<BookingEntity> getBookings() {
         return bookings;
     }
 
-    public void setBookings(java.util.List<Booking> bookings) {
+    public void setBookings(java.util.List<BookingEntity> bookings) {
         this.bookings = bookings;
     }
 
