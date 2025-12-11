@@ -4,7 +4,10 @@ import LandingPage  from './Components/LandingPage';
 import LoginPage from './Components/LoginPage';
 import Dashboard from "./Components/Dashboard";
 import Reviews from "./Components/Reviews";
-
+import ProvidersForm from "./Components/ProvidersForm";
+import AdminLogin from "./Components/AdminLogin";
+import AdminDashboard from "./Components/AdminDashboard";
+import ProvidersPage from "./Components/ProvidersPage";
 
 
 function App() {
@@ -16,6 +19,10 @@ function App() {
         <Route path="/login" element={<LoginPage />}/> 
         <Route path="/dashboard" element={<Dashboard/>}/>
         <Route path="/reviews" element={<Reviews/>}/>
+        <Route path="/provider/register" element={<ProvidersForm />} />
+        <Route path="/admin" element={<AdminLogin />} />
+        <Route path="/admin-dashboard" element={<AdminDashboard />} />
+        <Route path="/provider/page" element={<ProvidersPage />} />
       </Routes>
     </Router>
   );
