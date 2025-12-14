@@ -52,27 +52,36 @@
   color: #2c5f6f;
 }
 
+/* Auth buttons container - holds both login/signup OR notification/profile */
 .auth-buttons {
   display: flex;
+  flex-direction: row;
   gap: 1rem;
   align-items: center;
   margin-left: auto;
+  flex-shrink: 0;
 }
 
+/* Header right - contains notification and profile buttons horizontally */
 .header-right {
-  display: flex;
-  flex-direction: row;
-  gap: 0.75rem;
-  align-items: center;
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 1rem !important;
+  align-items: center !important;
+  flex-wrap: nowrap !important;
+  flex-shrink: 0 !important;
 }
 
 /* Notification Button */
 .notification-menu {
   position: relative;
+  display: inline-flex !important;
+  align-items: center;
+  flex-shrink: 0;
 }
 
 .btn-notification {
-  padding: 0.5rem !important;
+  padding: 0 !important;
   background: rgba(255, 255, 255, 0.25) !important;
   color: white !important;
   border: none !important;
@@ -300,6 +309,9 @@
 /* Profile Menu */
 .profile-menu {
   position: relative;
+  display: inline-flex !important;
+  align-items: center;
+  flex-shrink: 0;
 }
 
 .btn-profile {
@@ -336,17 +348,6 @@
   overflow: hidden;
   z-index: 1000;
   animation: slideDown 0.3s ease;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 .dropdown-item {
@@ -415,12 +416,32 @@
 .modal-header {
   padding: 1.5rem;
   border-bottom: 1px solid #e5e7eb;
+  position: relative;
 }
 
 .modal-header h2 {
   margin: 0;
   font-size: 1.5rem;
   color: #031716;
+}
+
+.modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  color: #9ca3af;
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease;
+}
+
+.modal-close:hover {
+  color: #374151;
 }
 
 .modal-body {

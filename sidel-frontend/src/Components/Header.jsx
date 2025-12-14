@@ -191,91 +191,91 @@ const Header = () => {
             </>
           ) : (
             <div className="header-right">
-                {/* Notification Button */}
-                <div className="notification-menu">
-                  <button
-                    className="btn btn-notification"
-                    onClick={toggleNotifications}
-                    title="Notifications">
-                    <Bell size={20} />
-                    {hasUnread && <span className="notification-badge"></span>}
-                  </button>
-                  {showNotifications && (
-                    <div className="notifications-dropdown">
-                      <div className="notifications-header">
-                        <h3>Notifications</h3>
-                        {notifications.length > 0 && (
-                          <button className="clear-all-btn" onClick={clearAllNotifications}>
-                            Clear All
-                          </button>
-                        )}
-                      </div>
-                      <div className="notifications-list">
-                        {notifications.length === 0 ? (
-                          <div className="empty-notifications">
-                            <p>No notifications yet</p>
-                          </div>
-                        ) : (
-                          notifications.map(notif => (
-                            <div 
-                              key={notif.id} 
-                              className="notification-item"
-                              onClick={() => handleNotificationClick(notif)}
-                            >
-                              <div className="notification-content">
-                                <p className="notification-text">{notif.message}</p>
-                                <span className="notification-time">
-                                  {new Date(notif.timestamp).toLocaleDateString()}
-                                </span>
-                              </div>
-                              <button
-                                className="notification-close"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  clearNotification(notif.id);
-                                }}>
-                                <X size={16} />
-                              </button>
+              {/* Notification Button */}
+              <div className="notification-menu">
+                <button
+                  className="btn btn-notification"
+                  onClick={toggleNotifications}
+                  title="Notifications">
+                  <Bell size={20} />
+                  {hasUnread && <span className="notification-badge"></span>}
+                </button>
+                {showNotifications && (
+                  <div className="notifications-dropdown">
+                    <div className="notifications-header">
+                      <h3>Notifications</h3>
+                      {notifications.length > 0 && (
+                        <button className="clear-all-btn" onClick={clearAllNotifications}>
+                          Clear All
+                        </button>
+                      )}
+                    </div>
+                    <div className="notifications-list">
+                      {notifications.length === 0 ? (
+                        <div className="empty-notifications">
+                          <p>No notifications yet</p>
+                        </div>
+                      ) : (
+                        notifications.map(notif => (
+                          <div 
+                            key={notif.id} 
+                            className="notification-item"
+                            onClick={() => handleNotificationClick(notif)}
+                          >
+                            <div className="notification-content">
+                              <p className="notification-text">{notif.message}</p>
+                              <span className="notification-time">
+                                {new Date(notif.timestamp).toLocaleDateString()}
+                              </span>
                             </div>
-                          ))
-                        )}
-                      </div>
+                            <button
+                              className="notification-close"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                clearNotification(notif.id);
+                              }}>
+                              <X size={16} />
+                            </button>
+                          </div>
+                        ))
+                      )}
                     </div>
-                  )}
-                </div>
-
-                {/* Profile Button */}
-                <div className="profile-menu">
-                  <button
-                    className="btn btn-profile"
-                    onClick={toggleDropdown}
-                    title={`Profile (${userName})`}>
-                    {userName.charAt(0).toUpperCase()}
-                  </button>
-                  {showDropdown && (
-                    <div className="dropdown-menu">
-                      <button
-                        className="dropdown-item"
-                        onClick={handleProviderClick}>
-                        Provider
-                      </button>
-                      <button
-                        className="dropdown-item"
-                        onClick={() => {
-                          setShowDropdown(false);
-                          navigate('/profile');
-                        }}>
-                        Personal Information
-                      </button>
-                      <button
-                        className="dropdown-item logout"
-                        onClick={handleLogout}>
-                        Logout
-                      </button>
-                    </div>
-                  )}
-                </div>
+                  </div>
+                )}
               </div>
+
+              {/* Profile Button */}
+              <div className="profile-menu">
+                <button
+                  className="btn btn-profile"
+                  onClick={toggleDropdown}
+                  title={`Profile (${userName})`}>
+                  {userName.charAt(0).toUpperCase()}
+                </button>
+                {showDropdown && (
+                  <div className="dropdown-menu">
+                    <button
+                      className="dropdown-item"
+                      onClick={handleProviderClick}>
+                      Provider
+                    </button>
+                    <button
+                      className="dropdown-item"
+                      onClick={() => {
+                        setShowDropdown(false);
+                        navigate('/profile');
+                      }}>
+                      Personal Information
+                    </button>
+                    <button
+                      className="dropdown-item logout"
+                      onClick={handleLogout}>
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
             )}
           </div>
         </header>
