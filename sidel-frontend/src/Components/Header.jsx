@@ -14,6 +14,8 @@ const Header = () => {
   const [technicianStatus, setTechnicianStatus] = useState(null);
   const [notifications, setNotifications] = useState([]);
   const [hasUnread, setHasUnread] = useState(false);
+  const [showBookingModal, setShowBookingModal] = useState(false);
+  const [selectedBooking, setSelectedBooking] = useState(null);
 
   useEffect(() => {
     // Check if user is logged in
@@ -128,6 +130,38 @@ const Header = () => {
     setNotifications(notifications.filter(n => n.id !== id));
   };
 
+  const clearAllNotifications = () => {
+    const existingNotifications = JSON.parse(localStorage.getItem('notifications')) || [];
+    const filtered = existingNotifications.filter(n => n.userId !== loggedUserId);
+    localStorage.setItem('notifications', JSON.stringify(filtered));
+    setNotifications([]);
+    setHasUnread(false);
+  };
+
+  const handleNotificationClick = (notif) => {
+    // Mark as read
+    const existingNotifications = JSON.parse(localStorage.getItem('notifications')) || [];
+    const updated = existingNotifications.map(n => 
+      n.id === notif.id ? { ...n, read: true } : n
+    );
+    localStorage.setItem('notifications', JSON.stringify(updated));
+    setNotifications(updated);
+    
+    // Find the related booking and show modal
+    if (notif.bookingId) {
+      const bookings = JSON.parse(localStorage.getItem('bookings')) || [];
+      const booking = bookings.find(b => b.id === notif.bookingId);
+      if (booking) {
+        setSelectedBooking(booking);
+        setShowBookingModal(true);
+        setShowNotifications(false);
+      }
+    } else if (notif.type === 'technician_approved') {
+      // Just show the approval message, don't navigate
+      setShowNotifications(false);
+    }
+  };
+
   return (
     <>
       <header className="header">
@@ -140,22 +174,23 @@ const Header = () => {
             <li><a href="#reviews">Reviews</a></li>
             <li><a href="#contact">Contact</a></li>
           </ul>
-          <div className="auth-buttons">
-            {!isLoggedIn ? (
-              <>
-                <button
-                  className="btn btn-login"
-                  onClick={() => navigate("/login")}>
-                  Login
-                </button>
-                <button
-                  className="btn btn-signup"
-                  onClick={() => navigate("/signup")} >
-                  Sign up
-                </button>
-              </>
-            ) : (
-              <div className="header-right">
+        </nav>
+        <div className="auth-buttons">
+          {!isLoggedIn ? (
+            <>
+              <button
+                className="btn btn-login"
+                onClick={() => navigate("/login")}>
+                Login
+              </button>
+              <button
+                className="btn btn-signup"
+                onClick={() => navigate("/signup")} >
+                Sign up
+              </button>
+            </>
+          ) : (
+            <div className="header-right">
                 {/* Notification Button */}
                 <div className="notification-menu">
                   <button
@@ -169,6 +204,11 @@ const Header = () => {
                     <div className="notifications-dropdown">
                       <div className="notifications-header">
                         <h3>Notifications</h3>
+                        {notifications.length > 0 && (
+                          <button className="clear-all-btn" onClick={clearAllNotifications}>
+                            Clear All
+                          </button>
+                        )}
                       </div>
                       <div className="notifications-list">
                         {notifications.length === 0 ? (
@@ -177,7 +217,11 @@ const Header = () => {
                           </div>
                         ) : (
                           notifications.map(notif => (
-                            <div key={notif.id} className="notification-item">
+                            <div 
+                              key={notif.id} 
+                              className="notification-item"
+                              onClick={() => handleNotificationClick(notif)}
+                            >
                               <div className="notification-content">
                                 <p className="notification-text">{notif.message}</p>
                                 <span className="notification-time">
@@ -186,7 +230,10 @@ const Header = () => {
                               </div>
                               <button
                                 className="notification-close"
-                                onClick={() => clearNotification(notif.id)}>
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  clearNotification(notif.id);
+                                }}>
                                 <X size={16} />
                               </button>
                             </div>
@@ -231,8 +278,7 @@ const Header = () => {
               </div>
             )}
           </div>
-        </nav>
-      </header>
+        </header>
 
       {/* Technician Confirmation Modal */}
       {showTechnicianModal && (
@@ -261,6 +307,72 @@ const Header = () => {
                   Confirm
                 </button>
               )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Booking Status Modal */}
+      {showBookingModal && selectedBooking && (
+        <div className="modal-overlay" onClick={() => setShowBookingModal(false)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h2>Booking Status</h2>
+              <button className="modal-close" onClick={() => setShowBookingModal(false)}>
+                <X size={24} />
+              </button>
+            </div>
+            <div className="modal-body">
+              <div className="booking-detail-section">
+                <h3>Service Details</h3>
+                <div className="detail-row">
+                  <span className="detail-label">Device Type:</span>
+                  <span className="detail-value">{selectedBooking.gadgetType}</span>
+                </div>
+                <div className="detail-row">
+                  <span className="detail-label">Brand:</span>
+                  <span className="detail-value">{selectedBooking.brand}</span>
+                </div>
+                <div className="detail-row">
+                  <span className="detail-label">Model:</span>
+                  <span className="detail-value">{selectedBooking.model}</span>
+                </div>
+                <div className="detail-row">
+                  <span className="detail-label">Issue:</span>
+                  <span className="detail-value">{selectedBooking.issueDescription}</span>
+                </div>
+              </div>
+              
+              <div className="booking-detail-section">
+                <h3>Booking Information</h3>
+                <div className="detail-row">
+                  <span className="detail-label">Requested Date:</span>
+                  <span className="detail-value">{selectedBooking.requestedServiceDate}</span>
+                </div>
+                {selectedBooking.actualServiceDate && (
+                  <div className="detail-row">
+                    <span className="detail-label">Scheduled Date:</span>
+                    <span className="detail-value">{selectedBooking.actualServiceDate}</span>
+                  </div>
+                )}
+                <div className="detail-row">
+                  <span className="detail-label">Status:</span>
+                  <span className={`status-badge status-${selectedBooking.status}`}>
+                    {selectedBooking.status === 'pending' && 'Pending'}
+                    {selectedBooking.status === 'in_progress' && 'In Progress'}
+                    {selectedBooking.status === 'completed' && 'Completed'}
+                    {selectedBooking.status === 'cancelled' && 'Cancelled'}
+                  </span>
+                </div>
+              </div>
+              
+              <div className="booking-detail-section">
+                <h3>Provider Information</h3>
+                <div className="detail-row">
+                  <span className="detail-label">Provider Email:</span>
+                  <span className="detail-value">{selectedBooking.providerEmail}</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>

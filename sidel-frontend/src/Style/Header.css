@@ -2,22 +2,34 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.75rem 2rem;
-  background: rgba(255, 255, 255, 0.3);
-  backdrop-filter: blur(10px);
-  height: 60px;
+  padding: 0.75rem 3rem;
+  background: linear-gradient(135deg, #031716 0%, #1a3a47 50%, #274D60 100%);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  height: 70px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  gap: 2rem;
 }
 
 .logo {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #1a1a1a;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: white;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  background: linear-gradient(to right, #fff, #0C969C);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .nav {
   display: flex;
   gap: 1.5rem;
   align-items: center;
+  flex: 0 1 auto;
 }
 
 .nav-links {
@@ -44,11 +56,13 @@
   display: flex;
   gap: 1rem;
   align-items: center;
+  margin-left: auto;
 }
 
 .header-right {
   display: flex;
-  gap: 1rem;
+  flex-direction: row;
+  gap: 0.75rem;
   align-items: center;
 }
 
@@ -59,12 +73,12 @@
 
 .btn-notification {
   padding: 0.5rem !important;
-  background: transparent !important;
-  color: #2c5f6f !important;
-  border: 2px solid #2c5f6f !important;
-  width: 40px !important;
-  height: 40px !important;
-  border-radius: 50% !important;
+  background: rgba(255, 255, 255, 0.25) !important;
+  color: white !important;
+  border: none !important;
+  width: 45px !important;
+  height: 45px !important;
+  border-radius: 8px !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -72,23 +86,36 @@
   transition: all 0.3s ease;
   position: relative;
   font-size: 0.95rem !important;
+  backdrop-filter: blur(10px);
 }
 
 .btn-notification:hover {
-  background: #2c5f6f !important;
-  color: white !important;
-  transform: scale(1.05);
+  background: rgba(255, 255, 255, 0.35) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .notification-badge {
   position: absolute;
-  top: 6px;
-  right: 6px;
-  width: 10px;
-  height: 10px;
-  background-color: #ef4444;
+  top: 8px;
+  right: 8px;
+  width: 12px;
+  height: 12px;
+  background: linear-gradient(135deg, #ff4d4d 0%, #ff1744 100%);
   border-radius: 50%;
   border: 2px solid white;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
 }
 
 .notifications-dropdown {
@@ -120,6 +147,9 @@
 .notifications-header {
   padding: 1rem;
   border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .notifications-header h3 {
@@ -127,6 +157,23 @@
   font-size: 1rem;
   color: #1f2937;
   font-weight: 600;
+}
+
+.clear-all-btn {
+  background: none;
+  border: none;
+  color: #0C969C;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.clear-all-btn:hover {
+  background: #f3f4f6;
+  color: #0a7d82;
 }
 
 .notifications-list {
@@ -152,11 +199,30 @@
   justify-content: space-between;
   align-items: flex-start;
   gap: 0.75rem;
-  transition: background 0.2s ease;
+  transition: all 0.2s ease;
+  position: relative;
+  cursor: pointer;
 }
 
 .notification-item:hover {
   background: #f9fafb;
+  transform: translateX(-2px);
+}
+
+.notification-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(135deg, #0C969C 0%, #0a7d82 100%);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.notification-item:hover::before {
+  opacity: 1;
 }
 
 .notification-content {
@@ -195,35 +261,40 @@
 }
 
 .btn {
-  padding: 0.5rem 1.25rem;
-  border-radius: 20px;
+  padding: 0.625rem 1.5rem;
+  border-radius: 25px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
   border: none;
-  font-size: 0.875rem;
+  font-size: 0.95rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .btn-login {
-  background: #2c5f6f;
+  background: rgba(255, 255, 255, 0.2);
   color: white;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
 }
 
 .btn-login:hover {
-  background: #234a56;
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.5);
   transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .btn-signup {
-  background: white;
-  color: #2c5f6f;
-  border: 2px solid #2c5f6f;
+  background: linear-gradient(135deg, #0C969C 0%, #0a7d82 100%);
+  color: white;
+  border: none;
 }
 
 .btn-signup:hover {
-  background: #2c5f6f;
-  color: white;
+  background: linear-gradient(135deg, #0a7d82 0%, #086e73 100%);
   transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(12, 150, 156, 0.4);
 }
 
 /* Profile Menu */
@@ -232,24 +303,25 @@
 }
 
 .btn-profile {
-  background: #2c5f6f !important;
+  background: rgba(255, 255, 255, 0.25) !important;
   color: white !important;
-  width: 40px !important;
-  height: 40px !important;
+  width: 45px !important;
+  height: 45px !important;
   border-radius: 50% !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  font-weight: 700 !important;
+  font-weight: 600 !important;
   font-size: 1.1rem !important;
-  border: 2px solid white !important;
+  border: none !important;
   cursor: pointer;
   transition: all 0.3s ease;
   padding: 0 !important;
+  backdrop-filter: blur(10px);
 }
 
 .btn-profile:hover {
-  background: #234a56 !important;
+  background: rgba(255, 255, 255, 0.35) !important;
   transform: translateY(-2px);
 }
 
@@ -258,12 +330,12 @@
   top: calc(100% + 10px);
   right: 0;
   background: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  min-width: 200px;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  min-width: 220px;
   overflow: hidden;
   z-index: 1000;
-  animation: fadeIn 0.2s ease;
+  animation: slideDown 0.3s ease;
 }
 
 @keyframes fadeIn {
@@ -279,28 +351,30 @@
 
 .dropdown-item {
   width: 100%;
-  padding: 0.75rem 1rem;
+  padding: 0.875rem 1rem;
   border: none;
   background: white;
   text-align: left;
   cursor: pointer;
-  transition: background 0.2s ease;
+  transition: all 0.2s ease;
   font-size: 0.9rem;
-  color: #1a1a1a;
+  color: #374151;
   font-weight: 500;
+  display: block;
 }
 
 .dropdown-item:hover {
-  background: #f3f4f6;
+  background: #f9fafb;
 }
 
 .dropdown-item.logout {
-  color: #dc2626;
+  color: #ef4444;
   border-top: 1px solid #e5e7eb;
+  font-weight: 600;
 }
 
 .dropdown-item.logout:hover {
-  background: #fee2e2;
+  background: #fef2f2;
 }
 
 /* Technician Confirmation Modal */
@@ -396,4 +470,72 @@
 .btn-confirm:hover {
   background-color: #234a56;
   transform: translateY(-2px);
+}
+
+/* Booking Status Modal */
+.booking-detail-section {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: rgba(12, 150, 156, 0.05);
+  border-radius: 8px;
+  border-left: 3px solid #0C969C;
+}
+
+.booking-detail-section h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1rem;
+  color: #031716;
+  font-weight: 600;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.detail-row:last-child {
+  border-bottom: none;
+}
+
+.detail-label {
+  font-weight: 500;
+  color: #666;
+  flex: 0 0 40%;
+}
+
+.detail-value {
+  color: #031716;
+  font-weight: 500;
+  text-align: right;
+  flex: 1;
+}
+
+.status-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.status-pending {
+  background: #FFF3CD;
+  color: #856404;
+}
+
+.status-in_progress {
+  background: #CCE5FF;
+  color: #004085;
+}
+
+.status-completed {
+  background: #D4EDDA;
+  color: #155724;
+}
+
+.status-cancelled {
+  background: #F8D7DA;
+  color: #721C24;
 }
