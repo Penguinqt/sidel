@@ -1,0 +1,502 @@
+/* ProvidersPage.css */
+
+.provider-page-container {
+  min-height: 100vh;
+  background-color: #f9fafb;
+  padding: 2rem;
+}
+
+.provider-header {
+  background: linear-gradient(135deg, #031716 0%, #274D60 100%);
+  color: white;
+  padding: 2rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.provider-header h1 {
+  margin: 0 0 0.5rem 0;
+  font-size: 2rem;
+}
+
+.provider-header p {
+  margin: 0.25rem 0;
+  opacity: 0.9;
+}
+
+/* Dashboard Stats */
+.dashboard-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  border-left: 4px solid #0C969C;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.stat-card.pending {
+  border-left-color: #f59e0b;
+}
+
+.stat-card.income {
+  border-left-color: #10b981;
+}
+
+.stat-card.completed {
+  border-left-color: #6366f1;
+}
+
+.stat-label {
+  font-size: 0.875rem;
+  color: #6b7280;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0.5rem 0;
+}
+
+.stat-change {
+  font-size: 0.875rem;
+  color: #10b981;
+}
+
+/* Content Grid */
+.provider-content {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 1024px) {
+  .provider-content {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Gigs Section */
+.gigs-section {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0;
+}
+
+.add-gig-btn {
+  background: linear-gradient(135deg, #0A7075 0%, #032F30 100%);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.add-gig-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(10, 112, 117, 0.3);
+}
+
+/* Gig Form */
+.gig-form {
+  background: #f9fafb;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.form-input,
+.form-textarea,
+.form-select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  transition: border-color 0.3s ease;
+  box-sizing: border-box;
+}
+
+.form-input:focus,
+.form-textarea:focus,
+.form-select:focus {
+  outline: none;
+  border-color: #0C969C;
+  box-shadow: 0 0 0 3px rgba(12, 150, 156, 0.1);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* Tags Input */
+.tags-input-container {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.tags-input-container input {
+  flex: 1;
+}
+
+.add-tag-btn {
+  background: #e5e7eb;
+  color: #374151;
+  padding: 0.75rem 1.25rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.add-tag-btn:hover {
+  background: #d1d5db;
+}
+
+.tags-display {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.tag-chip {
+  background: #0C969C;
+  color: white;
+  padding: 0.375rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.tag-chip:hover {
+  background: #0A7075;
+}
+
+/* Photo Upload */
+.photo-upload-container {
+  margin-bottom: 1rem;
+}
+
+.file-input-label {
+  display: inline-block;
+  background: #e5e7eb;
+  color: #374151;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.3s ease;
+}
+
+.file-input-label:hover {
+  background: #d1d5db;
+}
+
+.file-input-hidden {
+  display: none;
+}
+
+.photo-preview {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.photo-preview-item {
+  position: relative;
+  width: 100%;
+  height: 100px;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 2px solid #e5e7eb;
+}
+
+.photo-preview-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.submit-gig-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #0A7075 0%, #032F30 100%);
+  color: white;
+  padding: 0.875rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+}
+
+.submit-gig-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(10, 112, 117, 0.3);
+}
+
+/* Gigs Grid */
+.gigs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.gig-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.gig-card:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px);
+}
+
+.gig-image {
+  width: 100%;
+  height: 200px;
+  background: linear-gradient(135deg, #0C969C 0%, #032F30 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 3rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.gig-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.gig-content {
+  padding: 1.25rem;
+}
+
+.gig-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 0.5rem 0;
+}
+
+.gig-description {
+  color: #6b7280;
+  font-size: 0.875rem;
+  margin: 0 0 1rem 0;
+  line-height: 1.5;
+}
+
+.gig-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.gig-price {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #0A7075;
+}
+
+.gig-category {
+  background: #e0f2f1;
+  color: #0A7075;
+  padding: 0.375rem 0.75rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.gig-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.gig-tag {
+  background: #f3f4f6;
+  color: #6b7280;
+  padding: 0.25rem 0.625rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+}
+
+.delete-gig-btn {
+  width: 100%;
+  background: #ef4444;
+  color: white;
+  padding: 0.625rem;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.delete-gig-btn:hover {
+  background: #dc2626;
+}
+
+/* Bookings Section */
+.bookings-section {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.bookings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.booking-item {
+  background: #f9fafb;
+  padding: 1rem;
+  border-radius: 8px;
+  border-left: 4px solid #0C969C;
+}
+
+.booking-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+}
+
+.booking-client {
+  font-weight: 700;
+  color: #1f2937;
+  font-size: 0.95rem;
+}
+
+.booking-status {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.booking-status.pending {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.booking-status.completed {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.booking-status.cancelled {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.booking-details {
+  font-size: 0.875rem;
+  color: #6b7280;
+  line-height: 1.6;
+}
+
+.booking-date {
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+  color: #9ca3af;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #9ca3af;
+}
+
+.empty-state-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.empty-state-text {
+  font-size: 0.95rem;
+}

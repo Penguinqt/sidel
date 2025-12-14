@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../Style/ProvidersForm.css";
 
 const ProvidersForm = () => {
+  const navigate = useNavigate();
   const [providerData, setProviderData] = useState({
     name: "",
     email: "",
@@ -56,23 +57,30 @@ const ProvidersForm = () => {
   const handleSubmit = (e) => {
   e.preventDefault();
 
+  // Get logged-in user
+  const loggedUser = JSON.parse(localStorage.getItem('loggedUser'));
+
   // Load existing providers list
-  const existingProviders = JSON.parse(localStorage.getItem("providers")) || [];
+  const existingProviders = JSON.parse(localStorage.getItem('providers')) || [];
 
   // Add id + status
   const newProvider = {
     ...providerData,
-    id: Date.now(),       // unique ID
-    status: "pending",    // default
+    id: Date.now(),
+    status: "pending",
+    email: loggedUser?.email || providerData.email,
   };
 
   // Save
   const updatedProviders = [...existingProviders, newProvider];
-  localStorage.setItem("providers", JSON.stringify(updatedProviders));
+  localStorage.setItem('providers', JSON.stringify(updatedProviders));
 
   alert(
     "Provider registration submitted! Awaiting admin approval. You cannot access the Provider Page yet."
   );
+
+  // Redirect to dashboard
+  navigate('/dashboard');
 
   // Reset fields
   setProviderData({
@@ -94,27 +102,6 @@ const ProvidersForm = () => {
 };
   return (
     <div className="provider-form-page">
-      {/* Header */}
-      <header className="header">
-        <div className="header-content">
-          <div className="header-inner">
-            <h1 className="logo">Sidel</h1>
-            
-            <nav className="nav">
-              <Link to="/dashboard" className="nav-link">Services</Link>
-              <Link to="/browse" className="nav-link">Browse</Link>
-            </nav>
-
-            <div className="header-right">
-              <Link to="/provider/register" className="become-provider-btn">
-                Become a Provider
-              </Link>
-              <div className="profile-btn">P</div>
-            </div>
-          </div>
-        </div>
-      </header>
-
       {/* Form Content */}
       <div className="provider-form-container">
         <div className="form-header">

@@ -9,20 +9,48 @@ const LoginPage = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
-
-
 
   useEffect(() => {
     setIsLoaded(true);
   }, []);
 
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    
+    if (!email || !password) {
+      setError("Please fill in both email and password");
+      return;
+    }
 
-  const handleLogin = () => {
-    if(email === "admin@gmail.com" && password === "123456"){
-        navigate("/dashboard");
-    } else{
-       alert("Invalid Credentials");
+    setLoading(true);
+    setError("");
+
+    try {
+      const response = await fetch("http://localhost:8080/users/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (!response.ok) {
+        const errorMsg = await response.text();
+        throw new Error(errorMsg || "Invalid email or password");
+      }
+
+      const userData = await response.json();
+      
+      // Store user data in localStorage
+      localStorage.setItem("loggedUser", JSON.stringify(userData));
+      
+      // Navigate to dashboard
+      navigate("/dashboard");
+    } catch (err) {
+      setError(err.message || "Login failed. Please try again.");
+    } finally {
+      setLoading(false);
     }
   }
   return (
@@ -48,24 +76,29 @@ const LoginPage = () => {
           <span className="line"></span>
         </div>
 
-        <form className="login-form">
+        {error && <p className="error-message">{error}</p>}
+
+        <form className="login-form" onSubmit={handleLogin}>
           <input 
             type="email" 
             placeholder="Email" 
+            value={email}
             onChange={(e) => setEmail(e.target.value)} 
           />
 
           <input 
             type="password" 
             placeholder="Password" 
+            value={password}
             onChange={(e) => setPassword(e.target.value)} 
           />
           <button 
             type="submit" 
             className="login-btn"
-            onClick={handleLogin}
-            >Login
-            </button>
+            disabled={loading}
+            >
+            {loading ? "Logging in..." : "Login"}
+          </button>
         </form>
 
         <p className="terms-text">
