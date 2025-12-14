@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Bell, X } from 'lucide-react';
 import '../Style/Header.css';
 
 const Header = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState('');
   const [loggedUserId, setLoggedUserId] = useState(null);
@@ -69,8 +70,12 @@ const Header = () => {
         setNotifications(filtered);
         setHasUnread(filtered.some(n => !n.read));
       }
+    } else {
+      setIsLoggedIn(false);
+      setUserName('');
+      setLoggedUserId(null);
     }
-  }, []);
+  }, [location]); // Re-check when location changes
 
   const handleLogout = () => {
     localStorage.removeItem('loggedUser');
@@ -98,18 +103,28 @@ const Header = () => {
 
   const handleProviderClick = () => {
     setShowDropdown(false);
+    
+    // Re-check provider status from localStorage every time
+    const providers = JSON.parse(localStorage.getItem('providers')) || [];
+    const loggedUser = JSON.parse(localStorage.getItem('loggedUser'));
+    
+    if (!loggedUser) {
+      navigate('/login');
+      return;
+    }
+    
+    const userProvider = providers.find(p => p.email === loggedUser.email);
+    
     // Check if user is approved
-    if (technicianStatus === 'approved') {
-      // Get the provider data and set as logged provider
-      const providers = JSON.parse(localStorage.getItem('providers')) || [];
-      const loggedUser = JSON.parse(localStorage.getItem('loggedUser'));
-      const userProvider = providers.find(p => p.email === loggedUser.email);
-      if (userProvider) {
-        localStorage.setItem('loggedProvider', JSON.stringify(userProvider));
-        navigate('/provider/page');
-      }
+    if (userProvider && userProvider.status === 'approved') {
+      // Set as logged provider and navigate
+      localStorage.setItem('loggedProvider', JSON.stringify(userProvider));
+      navigate('/provider/page');
+    } else if (userProvider && userProvider.status === 'pending') {
+      // Show pending modal
+      setShowTechnicianModal(true);
     } else {
-      // Show modal for pending or new registration
+      // No provider account, show registration modal
       setShowTechnicianModal(true);
     }
   };
@@ -165,7 +180,7 @@ const Header = () => {
   return (
     <>
       <header className="header">
-        <div className="logo" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>logo</div>
+        <div className="logo" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>Sidel</div>
         <nav className="nav">
           <ul className="nav-links">
             <li><a href="#home">Home</a></li>

@@ -58,6 +58,9 @@ const SignupPage = () => {
       const data = await response.json();
       setSuccess("Account created successfully!");
       
+      // Save user data to localStorage so Header can detect logged-in state
+      localStorage.setItem("loggedUser", JSON.stringify(data));
+      
       // Navigate to dashboard only after successful signup
       setTimeout(() => {
         navigate("/dashboard");

@@ -10,6 +10,7 @@ const Dashboard = () => {
   const [providerGigs, setProviderGigs] = useState([]);
   const [showBookingModal, setShowBookingModal] = useState(false);
   const [selectedService, setSelectedService] = useState(null);
+  const [userName, setUserName] = useState("");
   const [bookingData, setBookingData] = useState({
     clientName: "",
     clientPhone: "",
@@ -24,6 +25,12 @@ const Dashboard = () => {
   const [bookingSuccess, setBookingSuccess] = useState("");
 
   useEffect(() => {
+    // Get logged user name
+    const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
+    if (loggedUser) {
+      setUserName(loggedUser.name || "User");
+    }
+
     // Get approved providers and their gigs from localStorage
     const approvedProviders = JSON.parse(localStorage.getItem("providers")) || [];
     const gigs = [];
@@ -293,7 +300,7 @@ const Dashboard = () => {
         <section className="section">
           <div className="section-header">
             <div>
-              <h2 className="section-title">Verified Pro Services</h2>
+              <h2 className="section-title">Welcome {userName}, let them help you!</h2>
               <p className="section-subtitle">Hand-vetted experts for all your repair needs</p>
             </div>
           </div>
