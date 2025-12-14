@@ -1,6 +1,5 @@
 package com.sidelbackend.Controller;
 
-
 import com.sidelbackend.Entity.UserEntity;
 import com.sidelbackend.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/users")
+@CrossOrigin(origins = "http://localhost:3000")
 public class UserController {
 
     @Autowired
@@ -55,4 +55,3 @@ public class UserController {
         return ResponseEntity.ok(userService.updateUser(id, user));
     }
 }
-
