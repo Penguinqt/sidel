@@ -54,9 +54,11 @@
 
 .auth-buttons {
   display: flex;
+  flex-direction: row;
   gap: 1rem;
   align-items: center;
   margin-left: auto;
+  flex-shrink: 0;
 }
 
 .header-right {
@@ -64,21 +66,27 @@
   flex-direction: row;
   gap: 0.75rem;
   align-items: center;
+  flex-wrap: nowrap;
+  flex-shrink: 0;
+  min-width: fit-content;
 }
 
 /* Notification Button */
 .notification-menu {
   position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
 }
 
 .btn-notification {
   padding: 0.5rem !important;
-  background: rgba(255, 255, 255, 0.25) !important;
+  background: rgba(255, 255, 255, 0.2) !important;
   color: white !important;
-  border: none !important;
+  border: 2px solid rgba(255, 255, 255, 0.3) !important;
   width: 45px !important;
   height: 45px !important;
-  border-radius: 8px !important;
+  border-radius: 25px !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
@@ -87,10 +95,12 @@
   position: relative;
   font-size: 0.95rem !important;
   backdrop-filter: blur(10px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .btn-notification:hover {
-  background: rgba(255, 255, 255, 0.35) !important;
+  background: rgba(255, 255, 255, 0.3) !important;
+  border-color: rgba(255, 255, 255, 0.5) !important;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
@@ -300,10 +310,13 @@
 /* Profile Menu */
 .profile-menu {
   position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
 }
 
 .btn-profile {
-  background: rgba(255, 255, 255, 0.25) !important;
+  background: linear-gradient(135deg, #0C969C 0%, #0a7d82 100%) !important;
   color: white !important;
   width: 45px !important;
   height: 45px !important;
@@ -317,12 +330,13 @@
   cursor: pointer;
   transition: all 0.3s ease;
   padding: 0 !important;
-  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .btn-profile:hover {
-  background: rgba(255, 255, 255, 0.35) !important;
+  background: linear-gradient(135deg, #0a7d82 0%, #086e73 100%) !important;
   transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(12, 150, 156, 0.4);
 }
 
 .dropdown-menu {

@@ -33,6 +33,24 @@ const AdminDashboard = () => {
 
   const rejectProvider = (id) => {
     if (window.confirm("Are you sure you want to reject this provider?")) {
+      // Find the provider before removing
+      const rejectedProvider = providers.find((prov) => prov.id === id);
+      
+      // Create rejection notification for the user
+      if (rejectedProvider) {
+        const notifications = JSON.parse(localStorage.getItem("notifications")) || [];
+        const rejectionNotif = {
+          id: Date.now(),
+          userId: rejectedProvider.userId || null,
+          type: "technician_rejected",
+          message: "Your technician application has been rejected. Please contact support for more information.",
+          timestamp: new Date().toISOString(),
+          read: false
+        };
+        notifications.push(rejectionNotif);
+        localStorage.setItem("notifications", JSON.stringify(notifications));
+      }
+      
       const updated = providers.filter((prov) => prov.id !== id);
       updateProviders(updated);
       alert("Provider rejected!");

@@ -8,6 +8,7 @@ import ProvidersForm from "./Components/ProvidersForm";
 import AdminLogin from "./Components/AdminLogin";
 import AdminDashboard from "./Components/AdminDashboard";
 import ProvidersPage from "./Components/ProvidersPage";
+import PersonalInformation from "./Components/PersonalInformation";
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
         <Route path="/admin" element={<AdminLogin />} />
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
         <Route path="/provider/page" element={<ProvidersPage />} />
+        <Route path="/profile" element={<PersonalInformation />} />
       </Routes>
     </Router>
   );
