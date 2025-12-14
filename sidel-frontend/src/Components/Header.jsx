@@ -6,7 +6,7 @@ const Header = () => {
    const navigate = useNavigate();
   return (
     <header className="header">
-        <div className="logo">logo</div>
+        <div className="logo">Sidel</div>
         <nav className="nav">
           <ul className="nav-links">
             <li><a href="#home">Home</a></li>
