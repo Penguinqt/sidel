@@ -63,12 +63,13 @@ const ProvidersForm = () => {
   // Load existing providers list
   const existingProviders = JSON.parse(localStorage.getItem('providers')) || [];
 
-  // Add id + status
+  // Add id + status + userId
   const newProvider = {
     ...providerData,
     id: Date.now(),
     status: "pending",
     email: loggedUser?.email || providerData.email,
+    userId: loggedUser?.userId || null,
   };
 
   // Save
