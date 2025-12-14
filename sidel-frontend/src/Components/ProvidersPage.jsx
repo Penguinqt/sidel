@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Plus, X, Upload, DollarSign, Package, CheckCircle, Clock } from "lucide-react";
+import { Plus, X, Upload, DollarSign, Package, CheckCircle, Clock, Bell, LogOut } from "lucide-react";
 import "../Style/ProvidersPage.css";
 
 const ProvidersPage = () => {
@@ -21,31 +21,198 @@ const ProvidersPage = () => {
   const [tagInput, setTagInput] = useState("");
   const [photoFiles, setPhotoFiles] = useState([]);
   const [photoPreview, setPhotoPreview] = useState([]);
+  const [loggedUser, setLoggedUser] = useState(null);
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [notifications, setNotifications] = useState([]);
+  const [hasUnread, setHasUnread] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
+  const [selectedBooking, setSelectedBooking] = useState(null);
+  const [showBookingDetail, setShowBookingDetail] = useState(false);
+  const [serviceDate, setServiceDate] = useState("");
 
   useEffect(() => {
-    const loggedProvider = JSON.parse(localStorage.getItem("loggedProvider"));
-    const loggedUser = JSON.parse(localStorage.getItem("loggedUser"));
+    const currentLoggedProvider = JSON.parse(localStorage.getItem("loggedProvider"));
+    const currentLoggedUser = JSON.parse(localStorage.getItem("loggedUser"));
 
-    if (!loggedUser) {
+    if (!currentLoggedUser) {
       alert("You must log in first.");
       navigate("/");
       return;
     }
 
-    if (!loggedProvider || loggedProvider.status !== "approved") {
+    if (!currentLoggedProvider || currentLoggedProvider.status !== "approved") {
       alert("Your provider application is still pending approval.");
       navigate("/dashboard");
       return;
     }
 
-    setProvider(loggedProvider);
-    setGigs(loggedProvider.gigs || []);
+    setLoggedUser(currentLoggedUser);
+    setProvider(currentLoggedProvider);
+    setGigs(currentLoggedProvider.gigs || []);
     
     // Load bookings from localStorage
-    const allBookings = JSON.parse(localStorage.getItem("bookings")) || [];
-    const providerBookings = allBookings.filter(b => b.providerId === loggedProvider.id);
+    const allBookings = JSON.parse(localStorage.getItem("providerBookings")) || [];
+    const providerBookings = allBookings.filter(b => b.providerEmail === currentLoggedProvider.email);
     setBookings(providerBookings);
+    
+    // Load notifications
+    const allNotifications = JSON.parse(localStorage.getItem("providerNotifications")) || [];
+    const providerNotifs = allNotifications.filter(n => n.providerEmail === currentLoggedProvider.email);
+    setNotifications(providerNotifs);
+    setHasUnread(providerNotifs.some(n => !n.read));
   }, [navigate]);
+
+  const toggleNotifications = () => {
+    setShowNotifications(!showNotifications);
+    if (!showNotifications) {
+      // Mark all as read
+      const allNotifications = JSON.parse(localStorage.getItem("providerNotifications")) || [];
+      const updated = allNotifications.map(n => 
+        n.providerEmail === provider.email ? { ...n, read: true } : n
+      );
+      localStorage.setItem("providerNotifications", JSON.stringify(updated));
+      setHasUnread(false);
+    }
+  };
+
+  const clearNotification = (id) => {
+    const allNotifications = JSON.parse(localStorage.getItem("providerNotifications")) || [];
+    const filtered = allNotifications.filter(n => n.id !== id);
+    localStorage.setItem("providerNotifications", JSON.stringify(filtered));
+    setNotifications(notifications.filter(n => n.id !== id));
+  };
+
+  const handleBackToUser = () => {
+    setShowMenu(false);
+    localStorage.removeItem("loggedProvider");
+    navigate("/dashboard");
+  };
+
+  const handleLogout = () => {
+    setShowMenu(false);
+    localStorage.removeItem("loggedUser");
+    localStorage.removeItem("loggedProvider");
+    navigate("/");
+  };
+
+  const handleBookingClick = (booking) => {
+    setSelectedBooking(booking);
+    setShowBookingDetail(true);
+    setServiceDate(booking.actualServiceDate || "");
+  };
+
+  const handleCloseBookingDetail = () => {
+    setShowBookingDetail(false);
+    setSelectedBooking(null);
+    setServiceDate("");
+  };
+
+  const handleAcceptBooking = () => {
+    if (!serviceDate) {
+      alert("Please set a service date");
+      return;
+    }
+
+    const updatedBookings = bookings.map(b =>
+      b.id === selectedBooking.id
+        ? { ...b, status: "in_progress", actualServiceDate: serviceDate }
+        : b
+    );
+    setBookings(updatedBookings);
+    localStorage.setItem("providerBookings", JSON.stringify(updatedBookings));
+    
+    // Also update user's bookings
+    const userBookings = JSON.parse(localStorage.getItem("bookings")) || [];
+    const updatedUserBookings = userBookings.map(b =>
+      b.id === selectedBooking.id
+        ? { ...b, status: "in_progress", actualServiceDate: serviceDate }
+        : b
+    );
+    localStorage.setItem("bookings", JSON.stringify(updatedUserBookings));
+    
+    // Create user notification
+    const userNotifications = JSON.parse(localStorage.getItem("notifications")) || [];
+    userNotifications.push({
+      id: Date.now(),
+      userId: selectedBooking.userId,
+      bookingId: selectedBooking.id,
+      type: "booking_accepted",
+      message: `Your booking for ${selectedBooking.serviceName} has been accepted! Service scheduled for ${serviceDate}.`,
+      timestamp: new Date().toISOString(),
+      read: false
+    });
+    localStorage.setItem("notifications", JSON.stringify(userNotifications));
+    
+    handleCloseBookingDetail();
+  };
+
+  const handleCompleteBooking = () => {
+    const updatedBookings = bookings.map(b =>
+      b.id === selectedBooking.id
+        ? { ...b, status: "completed" }
+        : b
+    );
+    setBookings(updatedBookings);
+    localStorage.setItem("providerBookings", JSON.stringify(updatedBookings));
+    
+    // Also update user's bookings
+    const userBookings = JSON.parse(localStorage.getItem("bookings")) || [];
+    const updatedUserBookings = userBookings.map(b =>
+      b.id === selectedBooking.id
+        ? { ...b, status: "completed" }
+        : b
+    );
+    localStorage.setItem("bookings", JSON.stringify(updatedUserBookings));
+    
+    // Create user notification
+    const userNotifications = JSON.parse(localStorage.getItem("notifications")) || [];
+    userNotifications.push({
+      id: Date.now(),
+      userId: selectedBooking.userId,
+      bookingId: selectedBooking.id,
+      type: "booking_completed",
+      message: `Your booking for ${selectedBooking.serviceName} has been completed!`,
+      timestamp: new Date().toISOString(),
+      read: false
+    });
+    localStorage.setItem("notifications", JSON.stringify(userNotifications));
+    
+    handleCloseBookingDetail();
+  };
+
+  const handleRejectBooking = () => {
+    const updatedBookings = bookings.map(b =>
+      b.id === selectedBooking.id
+        ? { ...b, status: "cancelled" }
+        : b
+    );
+    setBookings(updatedBookings);
+    localStorage.setItem("providerBookings", JSON.stringify(updatedBookings));
+    
+    // Also update user's bookings
+    const userBookings = JSON.parse(localStorage.getItem("bookings")) || [];
+    const updatedUserBookings = userBookings.map(b =>
+      b.id === selectedBooking.id
+        ? { ...b, status: "cancelled" }
+        : b
+    );
+    localStorage.setItem("bookings", JSON.stringify(updatedUserBookings));
+    
+    // Create user notification
+    const userNotifications = JSON.parse(localStorage.getItem("notifications")) || [];
+    userNotifications.push({
+      id: Date.now(),
+      userId: selectedBooking.userId,
+      bookingId: selectedBooking.id,
+      type: "booking_cancelled",
+      message: `Your booking for ${selectedBooking.serviceName} has been cancelled by the provider.`,
+      timestamp: new Date().toISOString(),
+      read: false
+    });
+    localStorage.setItem("notifications", JSON.stringify(userNotifications));
+    
+    handleCloseBookingDetail();
+  };
 
   // Calculate dashboard stats
   const stats = {
@@ -149,10 +316,85 @@ const ProvidersPage = () => {
 
   return (
     <div className="provider-page-container">
+      {/* Provider Header with Navigation */}
+      <div className="provider-navbar">
+        <div className="navbar-left">
+          <h1 className="navbar-logo">Sidel Provider</h1>
+        </div>
+        <div className="navbar-right">
+          {/* Notification Button */}
+          <div className="notification-menu">
+            <button
+              className="nav-btn notification-btn"
+              onClick={toggleNotifications}
+              title="Notifications">
+              <Bell size={20} />
+              {hasUnread && <span className="notification-badge"></span>}
+            </button>
+            {showNotifications && (
+              <div className="notifications-dropdown">
+                <div className="notifications-header">
+                  <h3>Booking Notifications</h3>
+                </div>
+                <div className="notifications-list">
+                  {notifications.length === 0 ? (
+                    <div className="empty-notifications">
+                      <p>No notifications</p>
+                    </div>
+                  ) : (
+                    notifications.map(notif => (
+                      <div key={notif.id} className="notification-item">
+                        <div className="notification-content">
+                          <p className="notification-text">{notif.message}</p>
+                          <span className="notification-time">
+                            {new Date(notif.timestamp).toLocaleDateString()}
+                          </span>
+                        </div>
+                        <button
+                          className="notification-close"
+                          onClick={() => clearNotification(notif.id)}>
+                          <X size={16} />
+                        </button>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Profile Button with Menu Dropdown */}
+          <div className="provider-menu">
+            <button 
+              className="nav-btn profile-btn" 
+              title="Menu" 
+              onClick={() => setShowMenu(!showMenu)}
+            >
+              {loggedUser?.name?.charAt(0).toUpperCase() || 'P'}
+            </button>
+            {showMenu && (
+              <div className="menu-dropdown">
+                <button onClick={handleBackToUser} className="menu-item">
+                  Back to User Dashboard
+                </button>
+                <button onClick={handleLogout} className="menu-item logout">
+                  Logout
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
       {/* Provider Header */}
       <div className="provider-header">
-        <h1>Welcome back, {provider.name}! 👋</h1>
-        <p><strong>Service:</strong> {provider.serviceCategory} | <strong>Experience:</strong> {provider.experience}</p>
+        <div className="header-left">
+          <h2>Welcome back, {provider.name}! 👋</h2>
+        </div>
+        <div className="header-right">
+          <p><strong>Service:</strong> {provider.serviceCategory}</p>
+          <p><strong>Experience:</strong> {provider.experience}</p>
+        </div>
       </div>
 
       {/* Dashboard Stats */}
@@ -356,7 +598,12 @@ const ProvidersPage = () => {
           ) : (
             <div className="bookings-list">
               {bookings.slice(0, 5).map((booking) => (
-                <div key={booking.id} className="booking-item">
+                <div 
+                  key={booking.id} 
+                  className="booking-item"
+                  onClick={() => handleBookingClick(booking)}
+                  style={{ cursor: 'pointer' }}
+                >
                   <div className="booking-header">
                     <div className="booking-client">{booking.clientName || "Client"}</div>
                     <span className={`booking-status ${booking.status.toLowerCase()}`}>
@@ -376,6 +623,139 @@ const ProvidersPage = () => {
           )}
         </div>
       </div>
+
+      {/* Booking Detail Modal */}
+      {showBookingDetail && selectedBooking && (
+        <div className="modal-overlay" onClick={handleCloseBookingDetail}>
+          <div className="modal-content booking-detail-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h2>Booking Details</h2>
+              <button onClick={handleCloseBookingDetail} className="modal-close-btn">
+                <X size={24} />
+              </button>
+            </div>
+
+            <div className="modal-body booking-modal-body">
+              {/* Client Information */}
+              <div className="booking-section-group">
+                <h3 className="section-title-sm">Client Information</h3>
+                <div className="info-grid">
+                  <div className="info-item">
+                    <label>Name</label>
+                    <p>{selectedBooking.clientName}</p>
+                  </div>
+                  <div className="info-item">
+                    <label>Email</label>
+                    <p>{selectedBooking.clientEmail}</p>
+                  </div>
+                  <div className="info-item">
+                    <label>Phone</label>
+                    <p>{selectedBooking.clientPhone}</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Device Information */}
+              <div className="booking-section-group">
+                <h3 className="section-title-sm">Device Information</h3>
+                <div className="info-grid">
+                  <div className="info-item">
+                    <label>Device Type</label>
+                    <p>{selectedBooking.gadgetType}</p>
+                  </div>
+                  <div className="info-item">
+                    <label>Brand</label>
+                    <p>{selectedBooking.brand || 'N/A'}</p>
+                  </div>
+                  <div className="info-item">
+                    <label>Model</label>
+                    <p>{selectedBooking.model || 'N/A'}</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Issue Description */}
+              <div className="booking-section-group">
+                <h3 className="section-title-sm">Issue Description</h3>
+                <div className="issue-box">
+                  {selectedBooking.issueDescription}
+                </div>
+              </div>
+
+              {/* Service Information */}
+              <div className="booking-section-group">
+                <h3 className="section-title-sm">Service Information</h3>
+                <div className="info-grid">
+                  <div className="info-item">
+                    <label>Service Name</label>
+                    <p>{selectedBooking.serviceName}</p>
+                  </div>
+                  <div className="info-item">
+                    <label>Requested Date</label>
+                    <p>{new Date(selectedBooking.requestedServiceDate).toLocaleDateString()}</p>
+                  </div>
+                  <div className="info-item">
+                    <label>Status</label>
+                    <p>
+                      <span className={`status-badge ${selectedBooking.status.toLowerCase()}`}>
+                        {selectedBooking.status.toUpperCase()}
+                      </span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Actions based on status */}
+              {selectedBooking.status === 'pending' && (
+                <div className="booking-section-group">
+                  <h3 className="section-title-sm">Set Service Date</h3>
+                  <input
+                    type="date"
+                    value={serviceDate}
+                    onChange={(e) => setServiceDate(e.target.value)}
+                    min={new Date().toISOString().split('T')[0]}
+                    className="service-date-input"
+                  />
+                </div>
+              )}
+
+              {selectedBooking.status === 'in_progress' && (
+                <div className="booking-section-group">
+                  <p className="info-text">Service Date: {selectedBooking.actualServiceDate}</p>
+                </div>
+              )}
+            </div>
+
+            {/* Modal Actions */}
+            <div className="modal-footer booking-modal-footer">
+              <button onClick={handleCloseBookingDetail} className="btn-secondary">
+                Close
+              </button>
+
+              {selectedBooking.status === 'pending' && (
+                <>
+                  <button onClick={handleRejectBooking} className="btn-danger">
+                    Reject
+                  </button>
+                  <button onClick={handleAcceptBooking} className="btn-primary">
+                    Accept & Set Date
+                  </button>
+                </>
+              )}
+
+              {selectedBooking.status === 'in_progress' && (
+                <button onClick={handleCompleteBooking} className="btn-success">
+                  Mark as Complete
+                </button>
+              )}
+
+              {(selectedBooking.status === 'completed' || selectedBooking.status === 'cancelled') && (
+                <p className="info-text">{selectedBooking.status === 'completed' ? '✓ Service Completed' : '✗ Booking Cancelled'}</p>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
